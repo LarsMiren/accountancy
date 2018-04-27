@@ -1,0 +1,99 @@
+syntax = "proto3";
+package logic;
+option go_package = "logic";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "github.com/LarsMiren/accountancy/proto/general/messages.proto";
+
+message Products {
+    repeated Product data = 1;
+}
+
+message Product {
+    string id = 1;
+    string name = 2;
+    bytes image = 3;
+    string description = 4;
+    string supplierId = 5;
+    string type = 6;
+}
+
+message Users {
+    int32 amount = 1;
+    repeated general.User data = 2;
+}
+
+message Id {
+    string id = 1;
+}
+
+message ProductType {
+    string type = 1;
+}
+
+service logic {
+    rpc GetUser (Id) returns (general.User) {
+        option (google.api.http) = {
+            get: "/user/{id}"
+        };
+    }
+    rpc GetProductById (Id) returns (Product) {
+        option (google.api.http) = {
+            get: "/product/{id}"
+        };
+    }
+    rpc GetAllUsers (google.protobuf.Empty) returns (Users) {
+        option (google.api.http) = {
+            get: "/users"
+        };
+    }
+    rpc GetProductsByType (ProductType) returns (Products) {
+        option (google.api.http) = {
+            get: "/products/type/{type}"
+        };
+    }
+    rpc GetProductsByUser (Id) returns (Products) {
+        option (google.api.http) = {
+            get: "/products/user/{id}"
+        };
+    }
+
+    rpc UpdateUser (general.User) returns (general.Confirmation) {
+        option (google.api.http) = {
+            put: "/user/{id}"
+            body: "*"
+        };
+    }
+    rpc UpdateProduct (Product) returns (general.Confirmation) {
+        option (google.api.http) = {
+            put: "/product/{id}"
+            body: "*"
+        };
+    }
+
+    rpc CreateProduct (Product) returns (general.Confirmation) {
+        option (google.api.http) = {
+            post: "/product"
+            body: "*"
+        };
+    }
+
+    rpc DeleteUser (Id) returns (general.Confirmation) {
+        option (google.api.http) = {
+            delete: "/user/{id}"
+        };
+    }
+    rpc DeleteProduct (Id) returns (general.Confirmation) {
+        option (google.api.http) = {
+            delete: "/product/{id}"
+        };
+    }
+
+    rpc Subscribe (Id) returns (general.Confirmation) {
+        option (google.api.http) = {
+            post: "/subscribe/{id}"
+            body: ""
+        };
+    }
+}

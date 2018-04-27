@@ -1,0 +1,27 @@
+syntax = "proto3";
+package auth;
+option go_package = "auth";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "github.com/LarsMiren/accountancy/proto/general/messages.proto";
+
+service auth {
+    rpc Login (general.User) returns (general.User) {
+        option (google.api.http) = {
+            post: "/user/login"
+            body: "*"
+        };
+    }
+    rpc Logout (google.protobuf.Empty) returns (general.Confirmation) {
+        option (google.api.http) = {
+            delete: "/user/logout"
+        };
+    }
+    rpc Signup (general.User) returns (general.Confirmation) {
+        option (google.api.http) = {
+            post: "/user/signup"
+            body: "*"
+        };
+    }
+}
