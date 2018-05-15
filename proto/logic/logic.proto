@@ -17,6 +17,7 @@ message Product {
     string description = 4;
     string supplierId = 5;
     string type = 6;
+    float cost = 7;
 }
 
 message Users {

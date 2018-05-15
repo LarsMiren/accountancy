@@ -8,25 +8,24 @@ import (
 	"strings"
 	"time"
 
+	"github.com/LarsMiren/accountancy/env"
 	gwAuth "github.com/LarsMiren/accountancy/proto/auth"
 	gwLogic "github.com/LarsMiren/accountancy/proto/logic"
-	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )
 
-var (
-	bindAddr      = flag.String("bind_address", "0.0.0.0:11000", "Bind endpoint")
-	endpointAuth  = flag.String("auth_endpoint", "127.0.0.1:5051", "Auth endpoint")
-	endpointLogic = flag.String("logic_endpoint", "127.0.0.1:5052", "Logic enpoint")
-)
-
-var memCacheClient *memcache.Client
-
-func init() {
-	memCacheClient = memcache.New("127.0.0.1:11211")
+type session struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
+
+var (
+	bindAddr      = flag.String("bind_address", "0.0.0.0"+env.GetPort("proxy"), "Bind endpoint")
+	endpointAuth  = flag.String("auth_endpoint", env.GetFullAddr("auth"), "Auth endpoint")
+	endpointLogic = flag.String("logic_endpoint", env.GetFullAddr("logic"), "Logic enpoint")
+)
 
 func allowCORS(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -59,18 +58,20 @@ func run(ctx context.Context) error {
 		grpc.FailOnNonTempDialError(true),
 		grpc.WithBlock(),
 	}
-
+	fmt.Println("Connecting to auth service")
 	err := gwAuth.RegisterAuthHandlerFromEndpoint(ctx, mux, *endpointAuth, opts)
 	if err != nil {
+		glog.Fatal(err)
 		return err
 	}
+	fmt.Println("Connecting to logic server")
 	err = gwLogic.RegisterLogicHandlerFromEndpoint(ctx, mux, *endpointLogic, opts)
 	if err != nil {
+		glog.Fatal(err)
 		return err
 	}
-	fmt.Printf("Starting http server")
-	err = http.ListenAndServe(*bindAddr, allowCORS(mux))
-	return err
+	fmt.Println("Allowing CORS")
+	return http.ListenAndServe(*bindAddr, allowCORS(mux))
 }
 
 func main() {

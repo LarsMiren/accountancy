@@ -1,0 +1,45 @@
+<p>
+  Sign Up!
+</p>
+<p>
+  <input
+    placeholder="Username"
+    type="text"
+    [(ngModel)]="username">
+</p>
+<p>
+  <input
+    placeholder="Password"
+    type="password"
+    [(ngModel)]="password">
+</p>
+<p>
+  <input
+    placeholder="Confirm password"
+    type="password"
+    [(ngModel)]="confPassword">
+</p>
+<p>
+  <input
+    placeholder="Email"
+    type="email"
+    [(ngModel)]="email">
+</p>
+<p>
+  <textarea 
+    placeholder="User Info"
+      [(ngModel)]="info">
+  </textarea>
+</p>
+<p *ngIf="url">
+    <img [src]="url" height="200"> <br/>
+</p>
+<p>
+    <input type='file' (change)="onSelectFile($event)">
+</p>
+<p>
+  <button
+    (click)="signup()">
+    Sign Up
+  </button>
+</p>

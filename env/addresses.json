@@ -1,0 +1,32 @@
+[
+    {
+        "name": "auth",
+        "addr": "127.0.0.1",
+        "port": "5051"
+    },
+    {
+        "name": "logic",
+        "addr": "127.0.0.1",
+        "port": "5052"
+    },
+    {
+        "name": "proxy",
+        "addr": "127.0.0.1",
+        "port": "5050"
+    },
+    {
+        "name": "memcache",
+        "addr": "127.0.0.1",
+        "port": "11211"
+    },
+    {
+        "name": "mysql",
+        "addr": "127.0.0.1",
+        "port": "3306"
+    },
+    {
+        "name": "postgres",
+        "addr": "127.0.0.1",
+        "port": "5432"
+    }
+]

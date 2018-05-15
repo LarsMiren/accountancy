@@ -1,0 +1,16 @@
+[
+    {
+        "name":"postgres",
+        "user":"vagrant",
+        "pass":"vagrant",
+        "dbname":"vagrant",
+        "with_tables":false
+    },
+    {
+        "name":"mysql",
+        "user":"root",
+        "pass":"root",
+        "dbname":"main_db",
+        "with_tables":false
+    }
+]

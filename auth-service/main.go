@@ -10,7 +10,6 @@ import (
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"google.golang.org/grpc"
 )
 
@@ -23,10 +22,10 @@ var (
 )
 
 func init() {
-	db, err := gorm.Open("mysql", "$user:$password@$host/$dbname?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-		panic(err)
-	}
+	// db, err := gorm.Open("mysql", "$user:$password@$host/$dbname?charset=utf8&parseTime=True&loc=Local")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 }
 
@@ -51,7 +50,7 @@ func (s *authServer) Signup(
 }
 
 func run() error {
-	listen, err := net.Listen("tcp", "5051")
+	listen, err := net.Listen("tcp", ":5051")
 	if err != nil {
 		return err
 	}
